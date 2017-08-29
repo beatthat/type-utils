@@ -1,6 +1,6 @@
 {
   "name": "unity-type-utils",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "utils",
   "main": "index.js",
   "repository": {
@@ -19,7 +19,8 @@
   },
   "homepage": "https://github.com/beatthat/unity-type-utils",
   "scripts": {
-    "postinstall": "node scripts/postinstall.js"
+    "postinstall": "node scripts/postinstall.js",
+    "install:test": "rm -f *.tgz && yarn cache clean && npm pack && cd test && npm run clean && yarn install"
   },
   "dependencies": {
     "ncp": "^2.0.0",

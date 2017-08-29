@@ -1,4 +1,3 @@
-using UnityEngine;
 
 using System;
 using System.Collections.Generic;
@@ -8,29 +7,46 @@ using System.Reflection;
 
 namespace BeatThat
 {
-	public static class TypeUtils 
+	public static class TypeUtils
 	{
+		/// <summary>
+		/// Find a type by searching all assemblies.
+		/// If type not found, returns null.
+		/// </summary>
+		/// <param name="name">the full type name, e.g. MyNameSpace.MyType</param>
+		public static Type Find(string name)
+		{
+			foreach(var a in AppDomain.CurrentDomain.GetAssemblies()) {
+				var t = a.GetType(name);
+				if(t != null) {
+					return t;
+				}
+			}
+
+			return null;
+		}
+
 		/// <summary>
 		/// Searches assemblies in project for all static methods with a given attribute.
 		/// Caches results for performance.
 		/// </summary>
 		public static MethodInfo[] FindStaticMethodsWithAttribute<T>(bool ignoreCache = false) where T : class
 		{
-			System.Type attrType = typeof(T);
+			Type attrType = typeof(T);
 			MethodInfo[] methods;
 			if(ignoreCache || !m_staticMethodsByAttribute.TryGetValue(attrType, out methods)) {
 				var methodList = new List<MethodInfo>();
 				foreach(Assembly a in AppDomain.CurrentDomain.GetAssemblies()) {
 					foreach(Type t in a.GetTypes()) {
 						foreach(MethodInfo m in t.GetMethods(BindingFlags.Static | BindingFlags.Public)) {
-							
+
 							foreach(var attr in m.GetCustomAttributes(false)) {
 								if(attr is T) {
 #if BT_DEBUG_UNSTRIP
 									Debug.Log ("[" + Time.time + "] TypeUtils::FindStaticMethodsWithAttribute '" + attrType.Name + "' found "
 									           + m.DeclaringType.Name + "::" + m.Name);
 #endif
-									
+
 									methodList.Add(m);
 								}
 							}
@@ -98,10 +114,10 @@ namespace BeatThat
 			for(int i = 0; i < fields.Length; i++) {
 				vals[i] = (ValType)fields[i].GetRawConstantValue();
 			}
-			
+
 			return vals;
 		}
-		
+
 		/// <summary>
 		/// Checks the existance of a list of type names and returns true if all exist.
 		/// Useful if you've generated a class and are waiting to see if unity compiled those classes.
@@ -116,13 +132,13 @@ namespace BeatThat
 					return false;
 				}
 			}
-			
+
 			return true; // all exist
 		}
 
 		class AttrAndType
 		{
-			public AttrAndType(System.Type attrType, System.Type valType)
+			public AttrAndType(Type attrType, System.Type valType)
 			{
 				this.attrType = attrType;
 				this.valType = valType;
@@ -162,7 +178,7 @@ namespace BeatThat
 				return this.attrType.GetHashCode() + (this.valType.GetHashCode() << 7);
 			}
 		}
-		
+
 		private static Dictionary<Type, MethodInfo[]> m_staticMethodsByAttribute = new Dictionary<Type, MethodInfo[]>();
 		private static Dictionary<AttrAndType, FieldInfo[]> m_staticFieldsByAttrAndType = new Dictionary<AttrAndType, FieldInfo[]>();
 
