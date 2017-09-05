@@ -27,6 +27,31 @@ namespace BeatThat
 		}
 
 		/// <summary>
+		/// Searches assemblies in project for any type that implements an interface (or extends class)
+		/// </summary>
+		public static Type[] FindTypesByAssignableType<T>(bool ignoreCache = false) where T : class
+		{
+			Type assignableType = typeof(T);
+			Type[] types;
+			if(ignoreCache || !m_typesByAssignableType.TryGetValue(assignableType, out types)) {
+				using(var typeList = ListPool<Type>.Get()) {
+					foreach(Assembly a in AppDomain.CurrentDomain.GetAssemblies()) {
+						foreach(Type t in a.GetTypes()) {
+							if(assignableType.IsAssignableFrom(t)) {
+								typeList.Add(t);
+							}
+						}
+					}
+				
+					types = typeList.ToArray();
+				}
+			}
+
+			m_typesByAssignableType[assignableType] = types;
+			return types;
+		}
+
+		/// <summary>
 		/// Searches assemblies in project for all static methods with a given attribute.
 		/// Caches results for performance.
 		/// </summary>
@@ -68,9 +93,9 @@ namespace BeatThat
 		/// </summary>
 		public static FieldInfo[] FindStaticFieldsWithAttrAndValType<AttrType,ValType>(bool ignoreCache = false)
 		{
-			System.Type attrType = typeof(AttrType);
-			System.Type valType = typeof(ValType);
-			AttrAndType key = new AttrAndType(attrType, valType);
+			Type attrType = typeof(AttrType);
+			Type valType = typeof(ValType);
+			var key = new AttrAndType(attrType, valType);
 
 			FieldInfo[] fields;
 			if(ignoreCache || !m_staticFieldsByAttrAndType.TryGetValue(key, out fields)) {
@@ -138,18 +163,18 @@ namespace BeatThat
 
 		class AttrAndType
 		{
-			public AttrAndType(Type attrType, System.Type valType)
+			public AttrAndType(Type attrType, Type valType)
 			{
 				this.attrType = attrType;
 				this.valType = valType;
 			}
 
-			public System.Type attrType
+			public Type attrType
 			{
 				get; private set;
 			}
 
-			public System.Type valType
+			public Type valType
 			{
 				get; private set;
 			}
@@ -181,6 +206,7 @@ namespace BeatThat
 
 		private static Dictionary<Type, MethodInfo[]> m_staticMethodsByAttribute = new Dictionary<Type, MethodInfo[]>();
 		private static Dictionary<AttrAndType, FieldInfo[]> m_staticFieldsByAttrAndType = new Dictionary<AttrAndType, FieldInfo[]>();
+		private static Dictionary<Type, Type[]> m_typesByAssignableType = new Dictionary<Type, Type[]>();
 
 	}
 }

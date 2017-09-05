@@ -1,6 +1,6 @@
 {
   "name": "unity-type-utils",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "utils",
   "main": "index.js",
   "repository": {
@@ -20,10 +20,12 @@
   "homepage": "https://github.com/beatthat/unity-type-utils",
   "scripts": {
     "postinstall": "node scripts/postinstall.js",
-    "install:test": "rm -f *.tgz && yarn cache clean && npm pack && cd test && npm run clean && yarn install"
+    "install:test": "rm -f *.tgz && npm pack && cd test && npm run clean && npm install",
+    "clean": "rm -f *.tgz && cd test && npm run clean"
   },
   "dependencies": {
     "ncp": "^2.0.0",
-    "mkdirp": "^0.5.1"
+    "mkdirp": "^0.5.1",
+    "unity-pools": "github:beatthat/unity-pools#semver:^0.0.5"
   }
 }
