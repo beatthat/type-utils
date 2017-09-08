@@ -8,7 +8,7 @@
     "clean": "rm -rf node_modules yarn.lock package-lock.json Library Temp Assets"
   },
   "dependencies": {
-    "unity-type-utils": "../unity-type-utils-0.0.4.tgz"
+    "type-utils": "../type-utils-0.0.5.tgz"
   },
   "devDependencies": {
     "babel-core": "^5.8.23",

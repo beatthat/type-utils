@@ -3,6 +3,9 @@ using System;
 
 namespace BeatThat
 {
+	/// <summary>
+	/// struct type class for passing around a type/interface pair
+	/// </summary>
 	public class TypeAndInterface  
 	{
 		public TypeAndInterface(Type t) :this(t, t)
