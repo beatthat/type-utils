@@ -8,7 +8,7 @@ using System.Reflection;
 namespace BeatThat
 {
 	/// <summary>
-	/// A collection of utilities for discovering types by reflection, e.g. by attribute or interface
+	/// Utilities for discovering types by reflection, e.g. by attribute or interface
 	/// </summary>
 	public static class TypeUtils
 	{
