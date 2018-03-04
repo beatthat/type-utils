@@ -1,7 +1,7 @@
 {
   "name": "type-utils",
   "scope": "ape",
-  "version": "0.0.6",
+  "version": "1.0.0",
   "description": "utils",
   "main": "index.js",
   "repository": {
