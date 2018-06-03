@@ -1,6 +1,6 @@
 {
   "name": "type-utils",
-  "scope": "ape",
+  "scope": "beatthat",
   "version": "1.0.0",
   "description": "utils",
   "main": "index.js",
@@ -11,7 +11,9 @@
   "files": [
     "index.js",
     "scripts",
-    "src"
+    "src",
+    "Runtime",
+    "Samples"
   ],
   "author": "larrykirschner@gmail.com",
   "license": "MIT",
@@ -32,9 +34,10 @@
     "postversion": "git push && git push --tags && npm run clean"
   },
   "dependencies": {
+    "collections-ext": "github:beatthat/collections-ext#semver:^1.0.0",
     "path": "^0.12.7",
-    "unity-npm-utils": "github:beatthat/unity-npm-utils#semver:^1.0.0",
-    "pools": "github:beatthat/pools#semver:^1.0.0"
+    "pools": "github:beatthat/pools#semver:^1.0.0",
+    "unity-npm-utils": "github:beatthat/unity-npm-utils#semver:^1.0.0"
   },
   "devDependencies": {}
 }

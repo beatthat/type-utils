@@ -1,0 +1,29 @@
+{
+  "packages": {
+    "collections-ext": {
+      "name": "collections-ext",
+      "version": "1.0.1",
+      "config": {},
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/beatthat/collections-ext.git"
+      },
+      "_requested": {
+        "type": "git",
+        "raw": "beatthat/collections-ext",
+        "rawSpec": "beatthat/collections-ext",
+        "saveSpec": "github:beatthat/collections-ext",
+        "fetchSpec": null,
+        "gitCommittish": null
+      },
+      "package_unity_src": "/Users/kirschner/unity-npm-utils-packages/type-utils/node_modules/collections-ext/Runtime/collections-ext",
+      "package_unity_samples": "/Users/kirschner/unity-npm-utils-packages/type-utils/node_modules/collections-ext/Samples",
+      "unity_install_path": "/Users/kirschner/unity-npm-utils-packages/type-utils/Assets/Plugins/packages/beatthat/collections-ext",
+      "unity_install_samples_path": "/Users/kirschner/unity-npm-utils-packages/type-utils/Assets/Samples/packages/beatthat/collections-ext",
+      "unity_install": {
+        "path": "/Users/kirschner/unity-npm-utils-packages/type-utils/Assets/Plugins/packages/beatthat/collections-ext",
+        "src": "/Users/kirschner/unity-npm-utils-packages/type-utils/node_modules/collections-ext/Runtime/collections-ext"
+      }
+    }
+  }
+}
