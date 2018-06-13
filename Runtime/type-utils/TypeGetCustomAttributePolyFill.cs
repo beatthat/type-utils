@@ -2,8 +2,8 @@ using System;
 
 namespace BeatThat.TypeExts
 {
-	#if ! NET_4_6
-	public static class TypeGetCustomAttributePolyFill
+#if !NET_4_6
+    public static class TypeGetCustomAttributePolyFill
 	{
 		public static T GetCustomAttribute<T>(
 			this Type t,
@@ -17,3 +17,4 @@ namespace BeatThat.TypeExts
 	}
 	#endif
 }
+

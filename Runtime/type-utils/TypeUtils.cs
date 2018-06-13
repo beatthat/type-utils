@@ -1,16 +1,16 @@
-
 using System;
 using System.Collections.Generic;
-
 using System.Reflection;
+using BeatThat.CollectionsExt;
+using BeatThat.Pools;
 
 
 namespace BeatThat
 {
-	/// <summary>
-	/// A collection of utilities for discovering types by reflection, e.g. by attribute or interface
-	/// </summary>
-	public static class TypeUtils
+    /// <summary>
+    /// A collection of utilities for discovering types by reflection, e.g. by attribute or interface
+    /// </summary>
+    public static class TypeUtils
 	{
 		/// <summary>
 		/// Find a type by searching all assemblies.
@@ -245,3 +245,6 @@ namespace BeatThat
         }
     }
 }
+
+
+
