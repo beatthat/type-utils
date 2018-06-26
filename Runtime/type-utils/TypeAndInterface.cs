@@ -1,7 +1,7 @@
 using System;
 
 
-namespace BeatThat
+namespace BeatThat.TypeUtil
 {
     /// <summary>
     /// struct type class for passing around a type/interface pair

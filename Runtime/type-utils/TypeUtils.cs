@@ -5,7 +5,7 @@ using BeatThat.CollectionsExt;
 using BeatThat.Pools;
 
 
-namespace BeatThat
+namespace BeatThat.TypeUtil
 {
     /// <summary>
     /// A collection of utilities for discovering types by reflection, e.g. by attribute or interface
@@ -213,36 +213,38 @@ namespace BeatThat
 
 	}
 
-    namespace TypeExt
+   
+}
+
+namespace BeatThat.TypeExts
+{
+    public static class TypeExt
     {
-        public static class TypeExt
+
+
+        public static void GetFieldsIncludingBaseTypes(this Type type, ICollection<FieldInfo> fields, BindingFlags flags)
         {
-
-
-            public static void GetFieldsIncludingBaseTypes(this Type type, ICollection<FieldInfo> fields, BindingFlags flags)
+            if (type == null || type == typeof(System.Object))
             {
-                if (type == null || type == typeof(System.Object))
-                {
-                    return;
-                }
-                // need to get fields recursively up type chain because otherwise you won't get fields in super classes
-                fields.AddRange(type.GetFields(flags | BindingFlags.DeclaredOnly));
-                GetFieldsIncludingBaseTypes(type.BaseType, fields, flags);
+                return;
             }
-
-            public static void GetPropertiesIncludingBaseTypes(this Type type, ICollection<PropertyInfo> props, BindingFlags flags)
-            {
-                if (type == null || type == typeof(System.Object))
-                {
-                    return;
-                }
-                // need to get fields recursively up type chain because otherwise you won't get fields in super classes
-                props.AddRange(type.GetProperties(flags | BindingFlags.DeclaredOnly));
-                GetPropertiesIncludingBaseTypes(type.BaseType, props, flags);
-            }
-
-
+            // need to get fields recursively up type chain because otherwise you won't get fields in super classes
+            fields.AddRange(type.GetFields(flags | BindingFlags.DeclaredOnly));
+            GetFieldsIncludingBaseTypes(type.BaseType, fields, flags);
         }
+
+        public static void GetPropertiesIncludingBaseTypes(this Type type, ICollection<PropertyInfo> props, BindingFlags flags)
+        {
+            if (type == null || type == typeof(System.Object))
+            {
+                return;
+            }
+            // need to get fields recursively up type chain because otherwise you won't get fields in super classes
+            props.AddRange(type.GetProperties(flags | BindingFlags.DeclaredOnly));
+            GetPropertiesIncludingBaseTypes(type.BaseType, props, flags);
+        }
+
+
     }
 }
 
