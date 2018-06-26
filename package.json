@@ -1,7 +1,7 @@
 {
   "name": "type-utils",
   "scope": "beatthat",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "utils",
   "main": "index.js",
   "repository": {
