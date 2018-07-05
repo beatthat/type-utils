@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using BeatThat.CollectionsExt;
 using BeatThat.Pools;
-
+using BeatThat.TypeExts;
 
 namespace BeatThat.TypeUtil
 {
@@ -53,6 +53,44 @@ namespace BeatThat.TypeUtil
 			m_typesByAssignableType[assignableType] = types;
 			return types;
 		}
+
+        /// <summary>
+        /// Searches assemblies in project for any type that implements an interface (or extends class)
+        /// </summary>
+        public static TypeAndAttribute[] FindTypesWithAttribute<T>(bool useCache = true) where T : Attribute
+        {
+            TypeAndAttribute[] result;
+
+            using(var resultList = ListPool<TypeAndAttribute>.Get()) {
+                foreach (var a in AppDomain.CurrentDomain.GetAssemblies())
+                {
+                    foreach (var t in a.GetTypes())
+                    {
+                        var attrs = t.GetCustomAttributes(typeof(T), false);
+                        if (attrs == null || attrs.Length == 0)
+                        {
+                            continue;
+                        }
+                        foreach(var o in attrs) {
+                            var attr = o as T;
+                            if(attr == null) {
+                                continue;
+                            }
+
+                            resultList.Add(new TypeAndAttribute
+                            {
+                                type = t,
+                                attr = attr
+                            });
+                        }
+                    }
+                }
+
+                result = resultList.ToArray();
+            }
+
+            return result;
+        }
 
 		/// <summary>
 		/// Searches assemblies in project for all static methods with a given attribute.
@@ -164,48 +202,53 @@ namespace BeatThat.TypeUtil
 			return true; // all exist
 		}
 
-		class AttrAndType
-		{
-			public AttrAndType(Type attrType, Type valType)
-			{
-				this.attrType = attrType;
-				this.valType = valType;
-			}
+        class AttrAndType
+        {
+            public AttrAndType(Type attrType, Type valType)
+            {
+                this.attrType = attrType;
+                this.valType = valType;
+            }
 
-			public Type attrType
-			{
-				get; private set;
-			}
+            public Type attrType
+            {
+                get; private set;
+            }
 
-			public Type valType
-			{
-				get; private set;
-			}
+            public Type valType
+            {
+                get; private set;
+            }
 
-			override public bool Equals(object o)
-			{
-				if(o == this) {
-					return true;
-				}
-				else if(o == null) {
-					return false;
-				}
-				else {
-					AttrAndType thatObj = o as AttrAndType;
-					if(thatObj == null) {
-						return false;
-					}
-					else {
-						return this.attrType == thatObj.attrType && this.valType == thatObj.valType;
-					}
-				}
-			}
+            override public bool Equals(object o)
+            {
+                if (o == this)
+                {
+                    return true;
+                }
+                else if (o == null)
+                {
+                    return false;
+                }
+                else
+                {
+                    AttrAndType thatObj = o as AttrAndType;
+                    if (thatObj == null)
+                    {
+                        return false;
+                    }
+                    else
+                    {
+                        return this.attrType == thatObj.attrType && this.valType == thatObj.valType;
+                    }
+                }
+            }
 
-			override public int GetHashCode()
-			{
-				return this.attrType.GetHashCode() + (this.valType.GetHashCode() << 7);
-			}
-		}
+            override public int GetHashCode()
+            {
+                return this.attrType.GetHashCode() + (this.valType.GetHashCode() << 7);
+            }
+        }
 
 		private static Dictionary<Type, MethodInfo[]> m_staticMethodsByAttribute = new Dictionary<Type, MethodInfo[]>();
 		private static Dictionary<AttrAndType, FieldInfo[]> m_staticFieldsByAttrAndType = new Dictionary<AttrAndType, FieldInfo[]>();
@@ -213,7 +256,7 @@ namespace BeatThat.TypeUtil
 
 	}
 
-   
+
 }
 
 namespace BeatThat.TypeExts
